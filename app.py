@@ -64,7 +64,7 @@ with st.form("data_form"):
 if submit:
     try:
         # פתיחת תמונת המקור החדשה
-        img = Image.open("original.png")
+        img = Image.open("original.jpg")
         draw = ImageDraw.Draw(img)
         
         # טעינת שני הפונטים בגדלים המבוקשים
