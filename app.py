@@ -68,9 +68,9 @@ if submit:
         draw = ImageDraw.Draw(img)
         
         # טעינת שני הפונטים בגדלים המבוקשים
-        font_david = ImageFont.truetype("DavidLibre-Medium.ttf", 13.9)
-        font_november = ImageFont.truetype("NovemberSuiteHebrewVF-instanceRegular.ttf", 12)
-
+        # שינינו את הגדלים מ-13.9 ו-12 ל-55 ו-48
+        font_david = ImageFont.truetype("DavidLibre-Medium.ttf", 55)
+        font_november = ImageFont.truetype("NovemberSuiteHebrewVF-instanceRegular.ttf", 48)
         data_map = {
             "heb_month": heb_month, "heb_date": heb_date,
             "eng_month": eng_month, "eng_date": eng_date,
