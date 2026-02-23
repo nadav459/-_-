@@ -5,7 +5,6 @@ from email.message import EmailMessage
 import io
 from bidi.algorithm import get_display
 
-# הגדרות קבועות - קואורדינטות 
 COORDS = {
     "heb_month": (1125, 1107.5),
     "heb_date": (1748, 1107.5),
@@ -36,6 +35,39 @@ def send_log_email(person_name):
 
 st.set_page_config(page_title="מחולל אישורים", layout="centered")
 st.title("מערכת הפקת אישורים מהירה")
+# הזרקת עיצוב CSS מותאם אישית
+    st.markdown("""
+        <style>
+        /* עיצוב רקע האפליקציה */
+        .stApp {
+            background-color: #f8f9fa;
+        }
+        
+        /* עיצוב כפתור היצירה */
+        div.stButton > button:first-child {
+            background-color: #2c3e50;
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            padding: 10px 24px;
+            width: 100%; /* כפתור לכל הרוחב */
+            transition: all 0.3s;
+        }
+        
+        /* אפקט מעבר עכבר (Hover) על הכפתור */
+        div.stButton > button:first-child:hover {
+            background-color: #1a252f;
+            color: #f1c40f; /* צבע צהוב במעבר עכבר */
+        }
+        
+        /* עיצוב תיבות הטקסט */
+        .stTextInput > div > div > input {
+            border-radius: 5px;
+            border: 1px solid #bdc3c7;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
 with st.form("data_form"):
     col1, col2 = st.columns(2)
