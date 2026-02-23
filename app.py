@@ -3,6 +3,7 @@ from PIL import Image, ImageDraw, ImageFont
 import smtplib
 from email.message import EmailMessage
 import io
+from bidi.algorithm import get_display
 
 # הגדרות קבועות - קואורדינטות 
 COORDS = {
@@ -67,10 +68,10 @@ if submit:
         img = Image.open("original.jpg")
         draw = ImageDraw.Draw(img)
         
-        # טעינת שני הפונטים בגדלים המבוקשים
-        # שינינו את הגדלים מ-13.9 ו-12 ל-55 ו-48
-        font_david = ImageFont.truetype("DavidLibre-Medium.ttf", 55)
-        font_november = ImageFont.truetype("NovemberSuiteHebrewVF-instanceRegular.ttf", 48)
+        # טעינת שני הפונטים בגדלים כפולים מהקודמים
+        font_david = ImageFont.truetype("DavidLibre-Medium.ttf", 110)
+        font_november = ImageFont.truetype("NovemberSuiteHebrewVF-instanceRegular.ttf", 96)
+        
         data_map = {
             "heb_month": heb_month, "heb_date": heb_date,
             "eng_month": eng_month, "eng_date": eng_date,
@@ -87,7 +88,11 @@ if submit:
             if text: # מוודא שהוכנס טקסט לפני שמציירים
                 # בחירת הפונט המתאים לפי שם השדה
                 current_font = font_david if key in david_fields else font_november
-                draw.text(COORDS[key], text, fill="black", font=current_font, anchor="mm")
+                
+                # *** התיקון הקריטי: הפיכת הטקסט לעברית תקינה משמאל לימין ***
+                correct_text = get_display(text)
+                
+                draw.text(COORDS[key], correct_text, fill="black", font=current_font, anchor="mm")
 
         buf = io.BytesIO()
         img.save(buf, format="PNG")
