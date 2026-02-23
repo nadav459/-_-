@@ -101,8 +101,8 @@ if submit:
         draw = ImageDraw.Draw(img)
         
         # טעינת שני הפונטים בגדלים כפולים מהקודמים
-        font_david = ImageFont.truetype("DavidLibre-Medium.ttf", 110)
-        font_november = ImageFont.truetype("NovemberSuiteHebrewVF-instanceRegular.ttf", 96)
+        font_david = ImageFont.truetype("DavidLibre-Medium.ttf", 100)
+        font_november = ImageFont.truetype("NovemberSuiteHebrewVF-instanceRegular.ttf", 88)
         
         data_map = {
             "heb_month": heb_month, "heb_date": heb_date,
