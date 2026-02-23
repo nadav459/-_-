@@ -39,32 +39,32 @@ st.title("מערכת הפקת אישורים מהירה")
 st.markdown("""
     <style>
     /* עיצוב רקע האפליקציה */
-    .stApp {
+    [data-testid="stAppViewContainer"] {
         background-color: #f8f9fa;
     }
     
-    /* עיצוב כפתור היצירה */
-    div.stButton > button:first-child {
-        background-color: #2c3e50;
-        color: white;
-        font-weight: bold;
-        border-radius: 8px;
-        border: none;
-        padding: 10px 24px;
-        width: 100%; /* כפתור לכל הרוחב */
-        transition: all 0.3s;
+    /* עיצוב כפתור היצירה בתוך הטופס */
+    [data-testid="stForm"] button {
+        background-color: #2c3e50 !important;
+        color: white !important;
+        font-weight: bold !important;
+        border-radius: 8px !important;
+        border: none !important;
+        width: 100% !important;
+        transition: all 0.3s !important;
     }
     
     /* אפקט מעבר עכבר (Hover) על הכפתור */
-    div.stButton > button:first-child:hover {
-        background-color: #1a252f;
-        color: #f1c40f; /* צבע צהוב במעבר עכבר */
+    [data-testid="stForm"] button:hover {
+        background-color: #1a252f !important;
+        color: #f1c40f !important;
+        border-color: #1a252f !important;
     }
     
     /* עיצוב תיבות הטקסט */
-    .stTextInput > div > div > input {
-        border-radius: 5px;
-        border: 1px solid #bdc3c7;
+    [data-testid="stTextInput"] input {
+        border-radius: 5px !important;
+        border: 1px solid #bdc3c7 !important;
     }
     </style>
 """, unsafe_allow_html=True)
