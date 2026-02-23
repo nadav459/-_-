@@ -4,7 +4,7 @@ import smtplib
 from email.message import EmailMessage
 import io
 
-# הגדרות קבועות - קואורדינטות (הממוצעים שחישבנו)
+# הגדרות קבועות - קואורדינטות 
 COORDS = {
     "heb_month": (1125, 1107.5),
     "heb_date": (1748, 1107.5),
@@ -20,7 +20,6 @@ COORDS = {
 }
 
 def send_log_email(person_name):
-    # כאן תצטרך להגדיר Secrets ב-Streamlit Cloud עבור המייל והסיסמה
     msg = EmailMessage()
     msg.set_content(f"נוצר אישור חדש במערכת עבור: {person_name}")
     msg['Subject'] = f"דיווח מערכת: הופק טופס עבור {person_name}"
@@ -37,7 +36,6 @@ def send_log_email(person_name):
 st.set_page_config(page_title="מחולל אישורים", layout="centered")
 st.title("מערכת הפקת אישורים מהירה")
 
-# שדות קלט למשתמש (השותף)
 with st.form("data_form"):
     col1, col2 = st.columns(2)
     with col1:
@@ -64,15 +62,15 @@ with st.form("data_form"):
     submit = st.form_submit_button("צור קובץ והורד")
 
 if submit:
-    # 1. פתיחת תמונת המקור (תוודא שהקובץ נמצא בתיקייה)
     try:
-        img = Image.open("template.png")
+        # פתיחת תמונת המקור החדשה
+        img = Image.open("original.png")
         draw = ImageDraw.Draw(img)
         
-        # 2. טעינת פונט (תוודא שקובץ ה-ttf נמצא בתיקייה)
-        font = ImageFont.truetype("assistant.ttf", 45) 
+        # טעינת שני הפונטים בגדלים המבוקשים
+        font_david = ImageFont.truetype("DavidLibre-Medium.ttf", 13.9)
+        font_november = ImageFont.truetype("NovemberSuiteHebrewVF-instanceRegular.ttf", 12)
 
-        # 3. הכנת הנתונים לכתיבה
         data_map = {
             "heb_month": heb_month, "heb_date": heb_date,
             "eng_month": eng_month, "eng_date": eng_date,
@@ -82,16 +80,19 @@ if submit:
             "service_start": service_start, "service_end": service_end
         }
 
-        # 4. כתיבה על התמונה
-        for key, text in data_map.items():
-            draw.text(COORDS[key], text, fill="black", font=font, anchor="mm") # anchor="mm" עוזר למרכז לפי הקואורדינטה
+        # רשימת השדות שצריכים לקבל את פונט דוד
+        david_fields = ["heb_month", "heb_date", "eng_month", "eng_date"]
 
-        # 5. שמירה לזיכרון לצורך הורדה
+        for key, text in data_map.items():
+            if text: # מוודא שהוכנס טקסט לפני שמציירים
+                # בחירת הפונט המתאים לפי שם השדה
+                current_font = font_david if key in david_fields else font_november
+                draw.text(COORDS[key], text, fill="black", font=current_font, anchor="mm")
+
         buf = io.BytesIO()
         img.save(buf, format="PNG")
         byte_im = buf.getvalue()
 
-        # 6. יצירת שם הקובץ לפי הפורמט שביקשת
         file_name = f"{last_name}_{first_name}.png"
 
         st.success(f"הקובץ עבור {first_name} {last_name} מוכן!")
@@ -103,8 +104,7 @@ if submit:
             mime="image/png"
         )
 
-        # 7. שליחת דיווח למייל
         send_log_email(f"{last_name} {first_name}")
         
-    except FileNotFoundError:
-        st.error("חסר קובץ מקור (template.png) או פונט (assistant.ttf)")
+    except FileNotFoundError as e:
+        st.error(f"שגיאה: חסר קובץ. נא לוודא שקובץ התמונה והפונטים נמצאים בתיקייה. פרטים: {e}")
